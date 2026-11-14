@@ -1,0 +1,44 @@
+# Swap Caps & Esc — dev, build and install entry points.
+
+[tools]
+node = "26"
+pre-commit = "latest"
+
+[vars]
+uuid = "swap-caps-escape@omary.github.io"
+
+[tasks."check:syntax"]
+description = "Syntax-check every JavaScript source file"
+run = '''
+for f in extension.js lib/*.js tests/*.js; do
+  node --check "$f" || exit 1
+done
+'''
+
+[tasks.test]
+description = "Run unit tests with GJS"
+run = "gjs -m tests/xkbOptions.test.js"
+
+[tasks.check]
+description = "Syntax and unit tests — no display needed"
+depends = ["check:syntax", "test"]
+
+[tasks.install]
+description = "Install the extension into the user extension directory"
+depends = ["check"]
+run = '''
+dest="$HOME/.local/share/gnome-shell/extensions/{{ vars.uuid }}"
+rm -rf "$dest"
+mkdir -p "$dest"
+cp -r metadata.json extension.js lib "$dest"
+'''
+
+[tasks.pack]
+description = "Build a zip that can be shared or uploaded"
+depends = ["check"]
+run = '''
+mkdir -p dist
+gnome-extensions pack --force \
+  --extra-source=lib --extra-source=LICENSE \
+  --out-dir=dist .
+'''

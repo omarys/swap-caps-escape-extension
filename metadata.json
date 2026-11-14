@@ -1,0 +1,16 @@
+{
+  "uuid": "swap-caps-escape@omary.github.io",
+  "name": "Swap Caps & Esc",
+  "description": "Quick Settings toggle to swap Caps Lock and Escape via XKB options.",
+  "shell-version": [
+    "45",
+    "46",
+    "47",
+    "48",
+    "49",
+    "50",
+    "51"
+  ],
+  "url": "https://github.com/omary/swap-caps-escape-extension",
+  "version": 1
+}
